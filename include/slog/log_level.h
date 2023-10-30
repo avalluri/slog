@@ -27,6 +27,10 @@ public:
     explicit LogLevel(const std::string& level_name)
         : lvl_(LogLevel::from_str(level_name.c_str())) {}
     
+    level_t Get() const {
+        return lvl_;
+    }
+
     bool operator>(LogLevel& other) const {
         return lvl_ > other.lvl_;
     }

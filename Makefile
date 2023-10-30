@@ -16,6 +16,9 @@ CXXFLAGS	:= -std=c++11 -Wall -Wextra -g
 #   their path using -Lpath, something like:
 LFLAGS =
 
+# define linker flags used while generating the binaries
+LDFLAGS =
+
 # define output directory
 OUTPUT	:= output
 
@@ -26,22 +29,21 @@ EXAMPLES := examples
 # define include directory
 INCLUDE	:= include
 
-# define lib directory
-LIB		:= lib
+TESTS   := tests
 
 ifeq ($(OS),Windows_NT)
 MAIN	:= sample-app.exe
+TESTMAIN	:= slog-test.exe
 SOURCEDIRS	:= $(SRC)
 INCLUDEDIRS	:= $(INCLUDE)
-LIBDIRS		:= $(LIB)
-FIXPATH = $(subst /,\,$1)
-RM			:= del /q /f
+EXAMPLEDIRS	:= $(EXAMPLES)
 MD	:= mkdir
 else
 MAIN	:= sample-app
-SOURCEDIRS	:= $(shell find $(SRC) $(EXAMPLES) -type d)
+TESTMAIN	:= slog-test
+SOURCEDIRS	:= $(shell find $(SRC) -type d)
 INCLUDEDIRS	:= $(shell find $(INCLUDE) -type d)
-#LIBDIRS		:= $(shell find $(LIB) -type d)
+EXAMPLEDIRS	:= $(shell find $(EXAMPLES) -type d)
 FIXPATH = $1
 RM = rm -f
 MD	:= mkdir -p
@@ -54,17 +56,18 @@ endif
 # define any directories containing header files other than /usr/include
 INCLUDES	:= $(patsubst %,-I%, $(INCLUDEDIRS:%/=%))
 
-# define the C libs
-LIBS		:= $(patsubst %,-L%, $(LIBDIRS:%/=%))
-
 # define the C source files
 SOURCES		:= $(wildcard $(patsubst %,%/*.cpp, $(SOURCEDIRS)))
+EXAMPLES	:= $(wildcard $(patsubst %,%/*.cpp, $(EXAMPLEDIRS)))
+TESTS		:= $(wildcard $(patsubst %,%/*.cpp, $(TESTS)))
 
 # define the C object files
-OBJECTS		:= $(SOURCES:.cpp=.o)
+SRC_OBJECTS		:= $(SOURCES:.cpp=.o)
+EXAMPLE_OBJECTS	:= $(EXAMPLES:.cpp=.o)
+TEST_OBJECTS	:= $(TESTS:.cpp=.o)
 
 # define the dependency output files
-DEPS		:= $(OBJECTS:.o=.d)
+DEPS		:= $(OBJECTS:.o=.d) $(EXAMPLE_OBJECTS:.o=.d) $(TESTS_OBJECTS:.o=.d)
 
 #
 # The following part of the makefile is generic; it can be used to
@@ -73,6 +76,7 @@ DEPS		:= $(OBJECTS:.o=.d)
 #
 
 OUTPUTMAIN	:= $(call FIXPATH,$(OUTPUT)/$(MAIN))
+TESTMAIN	:= $(call FIXPATH,$(OUTPUT)/$(TESTMAIN))
 
 all: $(OUTPUT) $(MAIN)
 	@echo Executing 'all' complete!
@@ -80,8 +84,10 @@ all: $(OUTPUT) $(MAIN)
 $(OUTPUT):
 	$(MD) $(OUTPUT)
 
-$(MAIN): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(OUTPUTMAIN) $(OBJECTS) $(LFLAGS) $(LIBS)
+$(MAIN): $(SRC_OBJECTS) $(EXAMPLE_OBJECTS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(OUTPUTMAIN) $(SRC_OBJECTS) $(EXAMPLE_OBJECTS) $(LFLAGS)
+$(TESTMAIN): $(OBJECTS) $(TEST_OBJECTS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(TESTMAIN) $(TEST_OBJECTS) $(SRC_OBJECTS) $(LFLAGS) -lcppunit
 
 # include all .d files
 -include $(DEPS)
@@ -108,3 +114,5 @@ run: all
 install:
 	install -d "$(DESTDIR)$(PREFIX)/include"
 	install -m 644 include/slog/*.h -D "$(DESTDIR)$(PREFIX)/include/slog/"
+
+test: $(TESTMAIN)
