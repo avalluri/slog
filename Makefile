@@ -21,6 +21,7 @@ OUTPUT	:= output
 
 # define source directory
 SRC		:= src
+EXAMPLES := examples
 
 # define include directory
 INCLUDE	:= include
@@ -29,7 +30,7 @@ INCLUDE	:= include
 LIB		:= lib
 
 ifeq ($(OS),Windows_NT)
-MAIN	:= main.exe
+MAIN	:= sample-app.exe
 SOURCEDIRS	:= $(SRC)
 INCLUDEDIRS	:= $(INCLUDE)
 LIBDIRS		:= $(LIB)
@@ -37,8 +38,8 @@ FIXPATH = $(subst /,\,$1)
 RM			:= del /q /f
 MD	:= mkdir
 else
-MAIN	:= main
-SOURCEDIRS	:= $(shell find $(SRC) -type d)
+MAIN	:= sample-app
+SOURCEDIRS	:= $(shell find $(SRC) $(EXAMPLES) -type d)
 INCLUDEDIRS	:= $(shell find $(INCLUDE) -type d)
 #LIBDIRS		:= $(shell find $(LIB) -type d)
 FIXPATH = $1
