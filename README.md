@@ -27,6 +27,13 @@ and to a file. It also supports writing logs to multiple targets.
 * [_Decorator_](./include/slog/decorators.h) - Adds additional prefixes to log messages like, timestamp, log level, pid, line number, etc.,
 * [_Log level_](./include/slog/log_level.h) - Labels that indicate the severity or urgency of the various events in the application.
 
+Currently supported features:
+  - Multi-thread safe file target API
+  - Logging to multiple targets
+  - Multiple loggers sharing the same target
+  - Filter messages to different targets based on the log level
+  - Logging user-defined types
+
 ## <a name='Prerequisites'></a>Prerequisites
 
 Prerequisites for building and running the simple logger code:
