@@ -29,7 +29,7 @@ EXAMPLES := examples
 # define include directory
 INCLUDE	:= include
 
-TESTS   := tests
+TESTSDIR   := tests
 
 ifeq ($(OS),Windows_NT)
 MAIN	:= sample-app.exe
@@ -59,12 +59,13 @@ INCLUDES	:= $(patsubst %,-I%, $(INCLUDEDIRS:%/=%))
 # define the C source files
 SOURCES		:= $(wildcard $(patsubst %,%/*.cpp, $(SOURCEDIRS)))
 EXAMPLES	:= $(wildcard $(patsubst %,%/*.cpp, $(EXAMPLEDIRS)))
-TESTS		:= $(wildcard $(patsubst %,%/*.cpp, $(TESTS)))
+TESTS		:= $(wildcard $(patsubst %,%/*.cpp, $(TESTSDIR)))
 
 # define the C object files
 SRC_OBJECTS		:= $(SOURCES:.cpp=.o)
 EXAMPLE_OBJECTS	:= $(EXAMPLES:.cpp=.o)
-TEST_OBJECTS	:= $(TESTS:.cpp=.o)
+TESTS_OBJECTS	:= $(TESTS:.cpp=.o)
+OBJECTS         := $(SRC_OBJECTS) $(EXAMPLE_OBJECTS) $(TESTS_OBJECTS)
 
 # define the dependency output files
 DEPS		:= $(OBJECTS:.o=.d) $(EXAMPLE_OBJECTS:.o=.d) $(TESTS_OBJECTS:.o=.d)
@@ -86,8 +87,8 @@ $(OUTPUT):
 
 $(MAIN): $(SRC_OBJECTS) $(EXAMPLE_OBJECTS)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(OUTPUTMAIN) $(SRC_OBJECTS) $(EXAMPLE_OBJECTS) $(LFLAGS)
-$(TESTMAIN): $(OBJECTS) $(TEST_OBJECTS)
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(TESTMAIN) $(TEST_OBJECTS) $(SRC_OBJECTS) $(LFLAGS) -lcppunit
+$(TESTMAIN): $(OBJECTS) $(TESTS_OBJECTS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(TESTMAIN) $(TESTS_OBJECTS) $(SRC_OBJECTS) $(LFLAGS) -lcppunit
 
 # include all .d files
 -include $(DEPS)
@@ -102,7 +103,7 @@ $(TESTMAIN): $(OBJECTS) $(TEST_OBJECTS)
 
 .PHONY: clean
 clean:
-	$(RM) $(OUTPUTMAIN)
+	$(RM) $(OUTPUTMAIN) $(TESTMAIN)
 	$(RM) $(call FIXPATH,$(OBJECTS))
 	$(RM) $(call FIXPATH,$(DEPS))
 	@echo Cleanup complete!
@@ -116,3 +117,4 @@ install:
 	install -m 644 include/slog/*.h -D "$(DESTDIR)$(PREFIX)/include/slog/"
 
 test: $(TESTMAIN)
+	./$(TESTMAIN)

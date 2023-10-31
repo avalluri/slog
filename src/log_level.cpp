@@ -30,11 +30,16 @@ LogLevel::level_t LogLevel::from_str(const char *level_name) {
         return name_to_level.find(level_name)->second;
     }
     
-    return Unknwon;
+    return Unknown;
 }    
 
-inline std::ostream& operator<<(std::ostream& stream, const LogLevel& l) {
+std::ostream& operator<<(std::ostream& stream, const LogLevel& l) {
     stream << LogLevel::to_str(l.lvl_);
+    return stream;
+}
+
+std::ostream& operator<<(std::ostream& stream, const LogLevel::level_t l) {
+    stream << LogLevel::to_str(l);
     return stream;
 }
 
