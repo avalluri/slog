@@ -84,6 +84,12 @@ public:
         level_ = lvl;
     }
 
+    void Flush() {
+        for (auto &t : targets_) {
+            t->Flush();
+        }
+    }
+
     void Trace(const string& msg) {
         log_entry(LogLevel::Trace, msg);
     }
@@ -109,18 +115,18 @@ public:
     }
 
 protected:
-    void log_entry(LogLevel::level_t lvl, const string& msg) {
+    void log_entry(LogLevel::level_t msg_lvl, const string& msg) {
         // do nothing if log level is not enabled.
-        if (LogLevel{lvl} < level_) return;
+        if (LogLevel{msg_lvl} > level_) return;
 
         // TODO(avalluri): currently using predefined list and order of 
         // log message decorators. This shall be configurable per logger/target.
         std::string decorated_msg = DateTimeDecorator().string() + " " +
             PidDecorator().string() + " " +
-            LogLevelDecorator(lvl).string() + " " + msg;
+            LogLevelDecorator(msg_lvl).string() + " " + msg;
 
-        for (auto target: targets_) {
-            target->Log(lvl, decorated_msg);
+        for (auto &target: targets_) {
+            target->Log(msg_lvl, decorated_msg);
         }
     }
 

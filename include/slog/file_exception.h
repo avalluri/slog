@@ -7,6 +7,10 @@
 
 namespace slog {
 
+/**
+ * FileException execption used for throwing exception
+ * occured while initializing the FileTarget
+*/
 class FileException: public std::exception {
 public:
     FileException(const std::string file, const std::string& msg, bool symlink=false)

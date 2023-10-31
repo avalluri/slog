@@ -54,9 +54,9 @@ int main(int argc, char *argv[])
     slog::Logger log2{"new_logger", file};
     log2.Debug("This message is from logger2");
     
-    } catch(std::string exp) {
+    } catch(slog::FileException &exp) {
         // Exception might be expected by the FileTarget
         // if it fails to open (or logs to) the log file.
-        std::cout << "Exception: "<< exp;
+        std::cout << "Exception: "<< exp.what();
     }
 }

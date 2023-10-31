@@ -1,15 +1,15 @@
 #ifndef __SLOG_FILE_TARGET_TEST_H_
 #define __SLOG_FILE_TARGET_TEST_H_
 
+#include <vector>
+#include <thread>
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
 
 #include <slog/file_target.h>
 #include <slog/file_exception.h>
-#include <slog/utils.h>
-#include <cstdlib>
-#include <vector>
-#include <thread>
+#include "test_utils.h"
+
 
 using namespace slog;
 
@@ -32,18 +32,17 @@ class FileTargetTest: public CppUnit::TestCase
     CPPUNIT_TEST(testFileTargetConcurrent);
     CPPUNIT_TEST_SUITE_END();
 
-    #define TEST_DIR "testdata"
-    #define TEST_FILE(file) (std::string(TEST_DIR) + directory_separator + file)
 public:
     FileTargetTest() = default;
     ~FileTargetTest() = default;
     void setUp() {
         // ensure no TEST_DIR exists before
         // running the tests
-        ::system((std::string("rm -rf ") + TEST_DIR).c_str());
+        cleanupTestdata();
     }
     void tearDown() {
-        ::system((std::string("rm -rf ") + TEST_DIR).c_str());
+        //::system((std::string("rm -rf ") + TEST_DIR).c_str());
+        cleanupTestdata();
     }
 
 protected:
