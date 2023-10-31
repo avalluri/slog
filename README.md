@@ -1,12 +1,10 @@
 # Simple Logger
 <!-- vscode-markdown-toc -->
-* [Overview](#Overview)
-* [Getting Started](#GettingStarted)
-	* [Prerequisites](#Prerequisites)
-* [Features](#Features)
-* [Usage](#Usage)
-* [Tests](#Tests)
-* [Future Work](#FutureWork)
+* [Overview](#overview)
+* [Prerequisites](#prerequisites)
+* [Usage](#usage)
+* [Tests](#tests)
+* [Roadmap](#roadmap)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -14,7 +12,7 @@
 	/vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc --># Simple Logger
 
-## <a name='Overview'></a>Overview
+## Overview
 
 A very lightweight logging interface  written in C++. There are no additional dependencies other than C++11 STL.
 It supports very simple thread-safe API for logging into the console (standard output, standard error)
@@ -34,14 +32,14 @@ Currently supported features:
   - Filter messages to different targets based on the log level
   - Logging user-defined types
 
-## <a name='Prerequisites'></a>Prerequisites
+## Prerequisites
 
 Prerequisites for building and running the simple logger code:
 * git
 * C++11 compiler
 * make
 
-## <a name='Usage'></a>Usage
+## Usage
 
 * Getting source code from the repository
 ```sh
@@ -66,7 +64,7 @@ $ cat ./logs/sample-app.log
 [Tue Oct 31 21:59:05 2023] [344365] [D] This message is from logger2
 ```
 
-## <a name='Tests'></a>Tests
+## Tests
 
 Unit tests are located under `./tests` folder. The tests are written using the CppUnit test framework.
 To run the tests one must install `libcppunit` development package.
@@ -89,7 +87,7 @@ LoggerTest::testWithDefaltOptions : OK
 LoggerTest::testWithCustomOptions : OK
 OK (9)
 ```
-## <a name='Limitations'></a>Limitations
+## Limitations
 
 The code has below known limitations, which must be addressed in future releases.
 Chacke with below [roadmap](#roadmap) section for further details:
@@ -98,7 +96,7 @@ Chacke with below [roadmap](#roadmap) section for further details:
 * Support only in-tree sources. To use `slogger` for other projects, clone the `slogger` or copy `./include/slog` and `./src` folders to their source tree.
 * No support for controlling the log message format, in other words, log message decorations.
 
-## <a name='Roadmap'></a>Roadmap
+## Roadmap
 
 The below features are in the roadmap and will be part of the future source code release:
 
