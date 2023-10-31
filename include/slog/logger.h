@@ -13,8 +13,13 @@
 using namespace std;
 
 namespace slog {
+/**
+ * Log level used if no log level set for all the loggers
+ */
+const static LogLevel::level_t DefaultLogLevel = LogLevel::Info;
 
 class Logger {
+    using target_ptr_t = shared_ptr<Target>;
 public:
     explicit Logger(string name)
         : context_(move(name)) {}
@@ -22,65 +27,108 @@ public:
     template <typename It>
     Logger(string name, It begin, It end)
         : context_(name), targets_(begin, end) {}
+    
+    template <typename It>
+    Logger(string name, LogLevel::level_t level, It begin, It end)
+        : context_(name), level_(level), targets_(begin, end) {}
 
-    Logger(string name, initializer_list<shared_ptr<Target> > targets)
+    Logger(string name, LogLevel::level_t level, initializer_list<target_ptr_t> targets)
+        : Logger{name, level, targets.begin(), targets.end()} {}
+
+    Logger(string name, initializer_list<target_ptr_t> targets)
         : Logger{name, targets.begin(), targets.end()} {}
-
-    Logger(string name, shared_ptr<Target> target)
+    
+    Logger(string name, target_ptr_t target)
         : Logger{name, {target}} {}
+
+    Logger(string name, LogLevel::level_t level)
+        : context_(move(name)), level_(level) {}
+
+    Logger(string name, LogLevel::level_t level, target_ptr_t target)
+        : Logger{name, level, {target}} {}
 
     ~Logger() {};
 
-    const string& context() const {
+    const string& Name() const {
         return context_;
     }
 
-    template<typename... Args>
-    void deubgf(string& fmt, Args &&... args) {
-        //log_entry(LogLevel::Deubg, fmt, forward<Args>(args)...);
+    void SetName(string name) {
+        context_ = move(name);
     }
 
-    void trace(const string& msg) {
+    const vector<target_ptr_t>& Targets() const {
+        return targets_;
+    }
+
+    void AddTarget(target_ptr_t target) {
+        std::lock_guard<std::mutex> lock(targets_mtx_);
+        targets_.push_back(target);
+    }
+
+    void RemoveTarget(target_ptr_t target) {
+        std::lock_guard<std::mutex> lock(targets_mtx_);
+        for (auto it = targets_.begin(); it != targets_.end(); ++it) {
+            if (*it == target) {
+                targets_.erase(it);
+                break;
+            }
+        }
+    }
+
+    LogLevel::level_t GetLevel() const {
+        return level_.Get();
+    }
+
+    void SetLevel(LogLevel::level_t lvl) {
+        level_ = lvl;
+    }
+
+    void Trace(const string& msg) {
         log_entry(LogLevel::Trace, msg);
     }
 
-    void deubg(const string& msg) {
+    void Debug(const string& msg) {
         log_entry(LogLevel::Debug, msg);
     }
 
-    void info(const string& msg) {
+    void Info(const string& msg) {
         log_entry(LogLevel::Info, msg);
     }
 
-    void warning(const string& msg) {
+    void Warning(const string& msg) {
         log_entry(LogLevel::Warning, msg);
     }
 
-    void error(const string& msg) {
+    void Error(const string& msg) {
         log_entry(LogLevel::Error, msg);
     }
 
-    void critical(const string& msg) {
+    void Critical(const string& msg) {
         log_entry(LogLevel::Critical, msg);
     }
 
 protected:
-    void log_entry(LogLevel::level_t level, const string& msg) {
+    void log_entry(LogLevel::level_t lvl, const string& msg) {
+        // do nothing if log level is not enabled.
+        if (LogLevel{lvl} < level_) return;
+
         // TODO(avalluri): currently using predefined list and order of 
         // log message decorators. This shall be configurable per logger/target.
-        
         std::string decorated_msg = DateTimeDecorator().string() + " " +
             PidDecorator().string() + " " +
-            LogLevelDecorator(level).string() + " " + msg;
+            LogLevelDecorator(lvl).string() + " " + msg;
 
         for (auto target: targets_) {
-            target->Log(level, decorated_msg);
+            target->Log(lvl, decorated_msg);
         }
     }
 
 private:
     string  context_;
+    LogLevel level_{DefaultLogLevel};
     vector<shared_ptr<slog::Target> > targets_{make_shared<StdoutTarget<mutex> >(LogLevel::Trace)};
+    std::mutex targets_mtx_; // mutex to protect targets_ from concurrent access
 }; // class logger
 
 } // namespace slog

@@ -70,6 +70,10 @@ public:
      * Operator functions
     */
 
+    void operator=(const LogLevel::level_t level) {
+        lvl_ = level;
+    }
+
     bool operator>(const LogLevel& other) const {
         return lvl_ > other.lvl_;
     }

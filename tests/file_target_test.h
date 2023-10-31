@@ -100,7 +100,6 @@ protected:
         Target *t = new FileTarget<std::mutex>{test_file_, LogLevel::Error};
         auto log_messgae = [=](std::string message) {
             t->Log(LogLevel::Error, message);
-            t->Flush();
         };
 
         std::vector<std::thread> threads;
@@ -113,6 +112,7 @@ protected:
         for (auto &t : threads) {
             t.join();
         }
+        t->Flush();
 
         int nLines = 0;
         std::ifstream fs(test_file_, std::ifstream::in);

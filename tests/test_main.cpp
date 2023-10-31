@@ -6,9 +6,11 @@
 
 #include "log_level_test.h"
 #include "file_target_test.h"
+#include "logger_test.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LogLevelTest);
 CPPUNIT_TEST_SUITE_REGISTRATION(FileTargetTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(LoggerTest);
 
 int main() {
     CPPUNIT_NS::TestResult testresult;

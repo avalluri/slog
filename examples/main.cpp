@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
     // looger with default stdout target
     slog::Logger dlog{std::string("default")};
-    dlog.info("log message should be visible on stdout!");
+    dlog.Info("log message should be visible on stdout!");
 
     // Select one or more log targets to write logs to
     auto stdout = std::make_shared<out_target_t>(slog::LogLevel::None);
@@ -33,13 +33,19 @@ int main(int argc, char *argv[])
      * logger
     */
 
-    log.error("Unknwon error occurred!!! Should be visible on stderr");
-    log.info("some info message to file");
+    log.Error("Unknwon error occurred!!! Should be visible on stderr");
+    log.Info("some info message to file");
     
     // Could log custom/user defined types using string streams
     std::ostringstream stream;
     stream << "Sample debug message..." << endl ;
-    log.deubg(stream.str());
+    log.Debug(stream.str());
+
+    /**
+     * Two loggers sharing the same (file) target.
+    */
+    slog::Logger log2{"new_logger", file};
+    log2.Debug("This message is from logger2");
     
     } catch(std::string exp) {
         // Exception might be expected by the FileTarget
