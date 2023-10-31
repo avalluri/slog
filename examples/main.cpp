@@ -4,6 +4,14 @@
 #include <slog/logger.h>
 #include <slog/file_target.h>
 
+/**
+  * Sample application to illustrate the usage of `slog::Logger`API features.
+  *
+  * > Logging to multiple targets
+  * > Multiple loggers sharing the same target
+  * > Filter messages to different targets based on the log level.
+  * > Logging user-defined types.
+  */
 int main(int argc, char *argv[])
 {
     MAYBE_UNUSED(argc);
@@ -32,10 +40,10 @@ int main(int argc, char *argv[])
      * logger
     */
 
-    log.Error("Unknwon error occurred!!! Should be visible on stderr");
+    log.Error("Unknown error occurred!!! Should be visible on stderr");
     log.Info("some info message to file");
     
-    // Could log custom/user defined types using string streams
+    // Could log custom/user-defined types using string streams
     std::ostringstream stream;
     stream << "Sample debug message..." << endl ;
     log.Debug(stream.str());
@@ -48,7 +56,7 @@ int main(int argc, char *argv[])
     
     } catch(std::string exp) {
         // Exception might be expected by the FileTarget
-        // if it fails to open (or logs to) log file.
+        // if it fails to open (or logs to) the log file.
         std::cout << "Exception: "<< exp;
     }
 }
