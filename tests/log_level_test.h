@@ -1,3 +1,11 @@
+/* Copyright (C) 2023 Amarnath Valluri - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the MIT license.
+ *
+ * You should have received a copy of the MIT license with
+ * this file. If not, please write to: , or visit:
+ * https://opensource.org/license/MIT/
+ */
 #ifndef __SLOG_TEST_LOG_LEVEL_H_
 #define __SLOG_TEST_LOG_LEVEL_H_
 
