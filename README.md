@@ -54,7 +54,7 @@ $ cd slogger && make
 ```
 The above command will generate `./output/sample-app` application binary.
 
-* Running sample application would generate example log messages to both console and to the file located at `./logs/sample-app,log`
+* Running sample application would generate example log messages to both the console and to the file located at `./logs/sample-app,log`
 ```sh
 $ ./output/sample-app
 [Tue Oct 31 21:59:05 2023] [344365] [I] log message should be visible on stdout!
@@ -69,7 +69,7 @@ $ cat ./logs/sample-app.log
 ## <a name='Tests'></a>Tests
 
 Unit tests are located under `./tests` folder. The tests are written using the CppUnit test framework.
-To run the tests one must `libcppunit` development package.
+To run the tests one must install `libcppunit` development package.
 
 Run the below command to run the tests:
 ```sh
