@@ -20,10 +20,9 @@ int main(int argc, char *argv[])
     dlog.Info("log message should be visible on stdout!");
 
     // Select one or more log targets to write logs to
-    auto stdout = std::make_shared<out_target_t>(slog::LogLevel::None);
+    auto stdout = std::make_shared<out_target_t>(slog::LogLevel::Trace);
     auto stderr = std::make_shared<err_target_t>(slog::LogLevel::Error);
-    auto file = std::make_shared<file_target_t>("logs/hello.txt", slog::LogLevel::Trace);
-
+    auto file = std::make_shared<file_target_t>("logs/sanple-app.log", slog::LogLevel::Trace);
 
     // Initialize the logger with the required targets
     slog::Logger log{std::string("custom"), {stdout, stderr, file}};
