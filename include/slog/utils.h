@@ -16,7 +16,7 @@ namespace utils {
 #if defined(WIN32) || defined(_WIN32)
 #define directory_separator "\\"
 #else
-#define direcotry_separator "/"
+#define directory_separator "/"
 #endif
 
 

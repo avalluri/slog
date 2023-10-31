@@ -43,7 +43,7 @@ string dirname(const string &path) {
     if (path.empty() || path == "/") {
         return "";
     }
-    auto index = path.find_last_of(direcotry_separator);
+    auto index = path.find_last_of(directory_separator);
     if (index == string::npos) {
         return "";
     }
@@ -57,7 +57,7 @@ bool inline create_directory(const string& dir) {
 // create_directory_path creats gvien directory and all
 // it's parent directories in the path.
 bool create_directory_path(const string& dir) {
-    if (dir == "" || dir == direcotry_separator) return true;
+    if (dir == "" || dir == directory_separator) return true;
     const string& parent_dir = dirname(dir);
     if (!parent_dir.empty()) {
         create_directory_path(parent_dir);

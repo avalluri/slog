@@ -5,8 +5,10 @@
 #include <cppunit/CompilerOutputter.h>
 
 #include "log_level_test.h"
+#include "file_target_test.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LogLevelTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(FileTargetTest);
 
 int main() {
     CPPUNIT_NS::TestResult testresult;

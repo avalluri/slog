@@ -74,9 +74,7 @@ protected:
             LogLevelDecorator(level).string() + " " + msg;
 
         for (auto target: targets_) {
-            if (target->GetLogLevel() >= level) {
-                target->log(decorated_msg);
-            }
+            target->Log(level, decorated_msg);
         }
     }
 
