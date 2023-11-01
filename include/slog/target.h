@@ -15,10 +15,10 @@
 namespace slog {
 
 /**
- * Target as base class for implementing logging targets
+ * Target is the base class for implementing logging targets
  * 
  * All targets must be inherited from this, and implement
- * its simple interface consits of:
+ * its simple interface consists of:
  *
  *  void log(const string& msg): write the message to target buffer.
  *  void flush():  flush target buffer.
@@ -29,12 +29,12 @@ public:
     Target() = default;
     virtual ~Target() = default;
    
-    // GetLogLevel retusn the current log level used by this target
+    // GetLogLevel returns the current log level used by this target
     const LogLevel& GetLogLevel() const  {
         return level_;
     }
 
-    // SetLogLevel update the targets log level
+    // SetLogLevel update the target log level
     void SetLogLevel(const LogLevel& level) {
         level_ = level;
     }
