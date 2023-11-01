@@ -21,7 +21,7 @@ bool file_exists(const string& path) {
     return (lstat(path.c_str(), &info) == 0) &&  ((info.st_mode & S_IFMT) == S_IFREG);
 }
 
-// directory_exists Checks if the given path is a direcotry.
+// directory_exists Checks if the given path is a directory.
 // do not follow symlinks.
 bool directory_exists(const string &path) {
     struct stat info;
@@ -43,7 +43,7 @@ bool is_symlink(const string &path) {
 
 // dirname returns the parent directory of the given
 // path:
-// ex(on linux):-
+// ex(on Linux):-
 //   dirname("/a/b/c/") => "/a/b/c"
 //   dirname("/a/b/c") => "/a/b"
 //   dirname("abc") => ""
@@ -62,8 +62,8 @@ bool inline create_directory(const string& dir) {
     return mkdir(dir.c_str(), mode_t(0755)) == 0;
 }
 
-// create_directory_path creats gvien directory and all
-// it's parent directories in the path.
+// create_directory_path creates the given directory and all
+//its parent directories in the path.
 bool create_directory_path(const string& dir) {
     if (dir == "" || dir == directory_separator) return true;
     const string& parent_dir = dirname(dir);
@@ -77,11 +77,11 @@ bool create_directory_path(const string& dir) {
     return true;
 }
 
-// ensure_directory_path make sures that the given directory path
-// exists, if not it creates. Returns false incase the directory
-// is path is empty or it fails to validate/create.
+// ensure_directory_path makes sure that the given directory path
+// exists, if not it creates. Returns false in case the directory
+// is path empty or it fails to validate/create.
 //
-// It raises exception if the directory path holds a symlink
+// It raises an exception if the directory path holds a symlink
 bool ensure_directory_path(const string& dir) {
     if (dir.empty() || directory_exists(dir)) {
         return true;
