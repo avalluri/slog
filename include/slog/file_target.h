@@ -24,11 +24,11 @@ class FileException;
 
 /**
  * FileTargetGeneric file target used for logging to a regular file.
- * It does not accept symlinks as log target.
- * If the file is not exists then it creates a new one with
+ * It does not accept symlinks as a log target.
+ * If the file does not exist then it creates a new one with
  * user-only readwrite permissions.
  * 
- * FileTarget is thread safe when it is instantiated with
+ * FileTarget is thread-safe when it is instantiated with
  * a valid mutex(std::mutex).
  */
 template <typename Mutex>
@@ -56,7 +56,7 @@ public:
         if (!fp_) return false;
         auto len = fwrite(msg.c_str(), 1, msg.size(), fp_);
         if (len < msg.size()) return false;
-        // Append a new line charechter if needed
+        // Append a new line character if needed
         // NOTE(avalluri): make it configurable?
         if (msg.empty() || msg[msg.size()-1] != '\n') {
             fwrite("\n", 1, 1, fp_);
@@ -99,7 +99,7 @@ private:
 }; // class FileTarget
 
 
-// Logging target for standared output
+// Logging target for standard output
 template<class Mutex>
 class StdoutTarget: public slog::FileTarget<Mutex> {
 public:
@@ -110,7 +110,7 @@ public:
 }; // class StdoutTarget
 
 
-// Logging target for standared output
+// Logging target for standard error
 template<class Mutex>
 class StderrTarget: public slog::FileTarget<Mutex> {
 public:
