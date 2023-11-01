@@ -22,7 +22,7 @@ using namespace std;
 
 namespace slog {
 /**
- * Log level used if no log level set for all the loggers
+ * Log level used if no log level is set for all the loggers
  */
 const static LogLevel::level_t DefaultLogLevel = LogLevel::Info;
 
@@ -124,10 +124,10 @@ public:
 
 protected:
     void log_entry(LogLevel::level_t msg_lvl, const string& msg) {
-        // do nothing if log level is not enabled.
+        // do nothing if the log level is not enabled.
         if (LogLevel{msg_lvl} > level_) return;
 
-        // TODO(avalluri): currently using predefined list and order of 
+        // TODO(avalluri): currently using a predefined list and order of 
         // log message decorators. This shall be configurable per logger/target.
         std::string decorated_msg = DateTimeDecorator().string() + " " +
             PidDecorator().string() + " " +
