@@ -20,7 +20,7 @@ namespace slog {
 /**
  * LogLevel
  *
- * A convinient interface to export set of log level used
+ * A convenient interface to export a set of log levels used
  * for logging.
  * 
 */
@@ -55,15 +55,15 @@ public:
         lvl_ = new_level;
     }
 
-    // ToString returns the string representaiton
-    // of the current log level in lower case.
+    // ToString returns the string representation
+    // of the current log level in lowercase.
     const std::string ToString() const {
         return LogLevel::to_str(lvl_);
     }
 
-    // ToChar returns the single ascii charecter
+    // ToChar returns the single ASCII character
     // in uppercase that represents the current log level:
-    //    None | Unknwon => '_'
+    //    None | Unknown => '_'
     //    Critical => 'C'
     //    Error => 'E'
     //    Warning => 'W'
