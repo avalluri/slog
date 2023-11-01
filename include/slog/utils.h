@@ -14,13 +14,13 @@
 namespace slog {
 namespace utils {
 // MAYBE_UNUSED could be used to avoid warnings
-// from compilers for unsed function arguments
+// from compilers for unused function arguments
 // and local variables.
 // NOTE: Avoid using in release code.
 #define MAYBE_UNUSED(arg) (void)(arg)
 
 // directory_separaotr defines folder separation 
-// charechter string
+// character string
 #if defined(WIN32) || defined(_WIN32)
 #define directory_separator "\\"
 #else
@@ -32,7 +32,7 @@ namespace utils {
 // It does not follow symlinks.
 bool file_exists(const std::string& path);
 
-// directory_exists Checks if the given path is a direcotry.
+// directory_exists Checks if the given path is a directory.
 // do not follow symlinks.
 bool directory_exists(const std::string &path);
 
@@ -41,7 +41,7 @@ bool is_symlink(const std::string &path);
 
 // dirname returns the parent directory of the given
 // path:
-// ex(on linux):-
+// ex(on Linux):-
 //   dirname("/a/b/c/") => "/a/b/c"
 //   dirname("/a/b/c") => "/a/b"
 //   dirname("abc") => ""
@@ -49,15 +49,15 @@ std::string dirname(const std::string &path);
 
 bool create_directory(const std::string& dir);
 
-// create_directory_path creats gvien directory and all
-// it's parent directories in the path.
+// create_directory_path creates the given directory and all
+// its parent directories in the path.
 bool create_directory_path(const std::string& dir);
 
-// ensure_directory_path make sures that the given directory path
-// exists, if not it creates. Returns false incase the directory
-// is path is empty or it fails to validate/create.
+// ensure_directory_path make sure that the given directory path
+// exists, if not it creates. Returns false in case the directory
+// is path empty or it fails to validate/create.
 //
-// It raises exception if the directory path holds a symlink
+// It raises an exception if the directory path holds a symlink
 bool ensure_directory_path(const std::string& dir);
 
 } // namespace utils
