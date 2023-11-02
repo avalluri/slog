@@ -50,7 +50,10 @@ public:
         : Logger{name, {target}} {}
 
     Logger(string name, LogLevel::level_t level)
-        : context_(move(name)), level_(level) {}
+        : context_(move(name)), level_(level) {
+        // reset the default target log level to the logger level
+        targets_[0].get()->SetLogLevel(level);
+    }
 
     Logger(string name, LogLevel::level_t level, target_ptr_t target)
         : Logger{name, level, {target}} {}
@@ -98,32 +101,39 @@ public:
         }
     }
 
-    void Trace(const string& msg) {
-        log_entry(LogLevel::Trace, msg);
+    template <typename ...Args>
+    void Trace(const string& frmt, Args&&... args) {
+        log_entry(LogLevel::Trace, frmt, forward<Args>(args)...);
     }
 
-    void Debug(const string& msg) {
-        log_entry(LogLevel::Debug, msg);
+    template <typename ...Args>
+    void Debug(const string& frmt, Args&&... args) {
+        log_entry(LogLevel::Debug, move(frmt), forward<Args>(args)...);
     }
 
-    void Info(const string& msg) {
-        log_entry(LogLevel::Info, msg);
+    template <typename ...Args>
+    void Info(const string& frmt, Args&&... args) {
+        log_entry(LogLevel::Info, move(frmt), forward<Args>(args)...);
     }
 
-    void Warning(const string& msg) {
-        log_entry(LogLevel::Warning, msg);
+    template <typename ...Args>
+    void Warning(const string& frmt, Args&&... args) {
+        log_entry(LogLevel::Warning, move(frmt), forward<Args>(args)...);
     }
 
-    void Error(const string& msg) {
-        log_entry(LogLevel::Error, msg);
+    template <typename ...Args>
+    void Error(const string& frmt, Args&&... args) {
+        log_entry(LogLevel::Error, move(frmt), forward<Args>(args)...);
     }
 
-    void Critical(const string& msg) {
-        log_entry(LogLevel::Critical, msg);
+    template <typename ...Args>
+    void Critical(const string& frmt, Args&&... args) {
+        log_entry(LogLevel::Critical, move(frmt), forward<Args>(args)...);
     }
 
 protected:
-    void log_entry(LogLevel::level_t msg_lvl, const string& msg) {
+    template<typename ...Args>
+    void log_entry(LogLevel::level_t msg_lvl, const string& fmt, Args&&... args) {
         // do nothing if the log level is not enabled.
         if (LogLevel{msg_lvl} > level_) return;
 
@@ -131,10 +141,10 @@ protected:
         // log message decorators. This shall be configurable per logger/target.
         std::string decorated_msg = DateTimeDecorator().string() + " " +
             PidDecorator().string() + " " +
-            LogLevelDecorator(msg_lvl).string() + " " + msg;
+            LogLevelDecorator(msg_lvl).string() + " " + fmt;
 
         for (auto &target: targets_) {
-            target->Log(msg_lvl, decorated_msg);
+            target->Log(msg_lvl, decorated_msg, forward<Args>(args)...);
         }
     }
 

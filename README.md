@@ -26,6 +26,7 @@ and to a file. It also supports writing logs to multiple targets.
 * [_Log level_](./include/slog/log_level.h) - Labels that indicate the severity or urgency of the various events in the application.
 
 Currently supported features:
+  - Logs formatted string with a variable sized list of arugments. (smimlar to `printf`)
   - Multi-thread safe file target API
   - Logging to multiple targets
   - Multiple loggers sharing the same target
@@ -55,13 +56,15 @@ The above command will generate `./output/sample-app` application binary.
 * Running sample application would generate example log messages to both the console and to the file located at `./logs/sample-app,log`
 ```sh
 $ ./output/sample-app
-[Tue Oct 31 21:59:05 2023] [344365] [I] log message should be visible on stdout!
-[Tue Oct 31 21:59:05 2023] [344365] [I] some info message to file
-[Tue Oct 31 21:59:05 2023] [344365] [D] Sample debug message...
+[Thu Nov  2 12:38:19 2023] [508754] [D] This debug message 0 should be visible on stdout!
+[Thu Nov  2 12:38:19 2023] [508754] [D] This debug message 1 should be visible on stdout!
+[Thu Nov  2 12:38:19 2023] [508754] [E] Unknown error occurred!!! Should be visible on stderr
+[Thu Nov  2 12:38:19 2023] [508754] [E] Unknown error occurred!!! Should be visible on stderr
+[Thu Nov  2 12:38:19 2023] [508754] [I] Info message. should appear both on stdout and in file
 $ cat ./logs/sample-app.log
-[Tue Oct 31 21:59:05 2023] [344365] [I] some info message to file
-[Tue Oct 31 21:59:05 2023] [344365] [D] Sample debug message...
-[Tue Oct 31 21:59:05 2023] [344365] [D] This message is from logger2
+[Thu Nov  2 12:38:19 2023] [508754] [E] Unknown error occurred!!! Should be visible on stderr
+[Thu Nov  2 12:38:19 2023] [508754] [I] Info message. should appear both on stdout and in file
+[Thu Nov  2 12:38:19 2023] [508754] [D] This debug message is from logger2 to file: Hi!
 ```
 
 ## Tests
@@ -101,7 +104,6 @@ Chacke with below [roadmap](#roadmap) section for further details:
 The below features are in the roadmap and will be part of the future source code release:
 
 * Support distribution of `libslog.so` shared library.
-* Logging API with a variable number of arguments.
 * New decoration for adding log colors and source code location.
 * `ofstream` target for `std::cout` type logging API.
 * Flexible/configurable log decoratorion.

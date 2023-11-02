@@ -32,11 +32,13 @@ int main(int argc, char *argv[])
     try {
 
     // looger with default stdout target
-    slog::Logger dlog{std::string("default")};
-    dlog.Info("log message should be visible on stdout!");
+    slog::Logger dlog{std::string("default"), slog::LogLevel::Trace};
+    for (int i =1; i <= 2; i++) {
+        dlog.Debug("This debug message %d should be visible on stdout!", i);
+    }
 
     // Select one or more log targets to write logs to
-    auto stdout = std::make_shared<out_target_t>(slog::LogLevel::Trace);
+    auto stdout = std::make_shared<out_target_t>(slog::LogLevel::Info);
     auto stderr = std::make_shared<err_target_t>(slog::LogLevel::Error);
     auto file = std::make_shared<file_target_t>("logs/sanple-app.log", slog::LogLevel::Trace);
 
@@ -49,19 +51,19 @@ int main(int argc, char *argv[])
     */
 
     log.Error("Unknown error occurred!!! Should be visible on stderr");
-    log.Info("some info message to file");
+    log.Info("Info message. should appear both on stdout and in file");
     
     // Could log custom/user-defined types using string streams
     std::ostringstream stream;
-    stream << "Sample debug message..." << endl ;
+    stream << "Sample debug message. Should appear only in file." << endl ;
     log.Debug(stream.str());
 
     /**
      * Two loggers sharing the same (file) target.
     */
-    slog::Logger log2{"new_logger", file};
-    log2.Debug("This message is from logger2");
-    
+    slog::Logger log2{"new_logger", slog::LogLevel::Debug, file};
+    log2.Debug("This debug message is from logger2 to file: %s", "Hi!");
+ 
     } catch(slog::FileException &exp) {
         // Exception might be expected by the FileTarget
         // if it fails to open (or logs to) the log file.

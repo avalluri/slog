@@ -9,6 +9,8 @@
 #ifndef __SLOG_TARGET_H_
 #define __SLOG_TARGET_H_
 
+#include <cstdarg>
+#include <stdarg.h>
 #include <string>
 #include <slog/log_level.h>
 
@@ -45,11 +47,17 @@ public:
         return level <= level_;
     }
 
-    bool Log(LogLevel::level_t level, const std::string& msg) {
-        if (this->ShouldLog(level)) {
-            return this->log(msg);
+    bool Log(LogLevel::level_t level, const std::string& fmt, ...) {
+        if (!this->ShouldLog(level)) {
+            // do nothing if specified log level is not enabled by this target
+            return true;
         }
-        return true;
+
+        va_list args;
+        va_start(args, fmt);
+        auto res = this->log(fmt, args);
+        va_end(args);
+        return res;
     }
 
     void Flush() {
@@ -58,9 +66,10 @@ public:
 
 protected:
     /**
-     * log the give message to target stream, return false if failure to do so.
+     * log the formatted message with arguments to the target stream,
+     * Return false incase it fails to write.
     */
-    virtual bool log(const std::string& msg) = 0;
+    virtual bool log(const std::string& frmt, va_list args) = 0;
     /**
      * flush the target stream
     */

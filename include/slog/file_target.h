@@ -50,15 +50,16 @@ public:
     FileTarget &operator=(const FileTarget &) = delete;
     FileTarget &operator=(FileTarget &&) = delete;
 
-
-    bool log(const string& msg) override{
+    bool log(const std::string& frmt, va_list args) override{
         lock_guard<Mutex> lock(mutex_);
         if (!fp_) return false;
-        auto len = fwrite(msg.c_str(), 1, msg.size(), fp_);
-        if (len < msg.size()) return false;
+        auto res = vfprintf(fp_, frmt.c_str(), args);
+        if (res < 0) {
+            return false;
+        }
         // Append a new line character if needed
         // NOTE(avalluri): make it configurable?
-        if (msg.empty() || msg[msg.size()-1] != '\n') {
+        if (frmt.empty() || frmt[frmt.size()-1] != '\n') {
             fwrite("\n", 1, 1, fp_);
         }
         return true;
