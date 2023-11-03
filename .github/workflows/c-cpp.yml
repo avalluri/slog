@@ -16,7 +16,7 @@ jobs:
     - name: make
       run: make
     - name: install test dependencies
-      run: apt-get install libcppunit-dev
+      run: sudo apt-get install libcppunit-dev
     - name: make test
       run: make test
 
