@@ -34,7 +34,7 @@ class FileException;
 template <typename Mutex>
 class FileTarget : public Target {
 public:
-    explicit FileTarget(const string& file_name, LogLevel::level_t lvl = LogLevel::Debug)
+    explicit FileTarget(const string& file_name, LogLevel::level_t lvl = LogLevel::Debug) noexcept(false)
         : Target(lvl), file_name_(file_name) {
 
         prepare_log_file();
