@@ -46,7 +46,7 @@ public:
         : lvl_(LogLevel::from_str(level_name.c_str())) {}
     
     // Get returns the current log level
-    level_t Get() const {
+    constexpr level_t Get() const {
         return lvl_;
     }
 
@@ -82,27 +82,27 @@ public:
         lvl_ = level;
     }
 
-    bool operator>(const LogLevel& other) const {
+    constexpr bool operator>(const LogLevel& other) const {
         return lvl_ > other.lvl_;
     }
 
-    bool operator>=(const LogLevel& other) const {
+    constexpr bool operator>=(const LogLevel& other) const {
         return lvl_ >= other.lvl_;
     }
 
-    bool operator<(const LogLevel& other) const {
+    constexpr bool operator<(const LogLevel& other) const {
         return lvl_ < other.lvl_;
     }
 
-    bool operator<=(const LogLevel& other) const {
+    constexpr bool operator<=(const LogLevel& other) const {
         return lvl_ <= other.lvl_;
     }
 
-    bool operator==(const LogLevel& other) const {
+    constexpr bool operator==(const LogLevel& other) const {
         return lvl_ == other.lvl_;
     }
 
-    bool operator!=(const LogLevel& other) const {
+    constexpr bool operator!=(const LogLevel& other) const {
         return lvl_ != other.lvl_;
     }
 

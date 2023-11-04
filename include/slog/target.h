@@ -43,7 +43,7 @@ public:
 
     // ShouldLog returns if the messages with the given log level
     // should be logged.
-    bool ShouldLog(const LogLevel& level) {
+    constexpr bool ShouldLog(const LogLevel& level) {
         return level <= level_;
     }
 
