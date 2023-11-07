@@ -24,6 +24,17 @@ and to a file. It also supports writing logs to multiple targets.
 * [_Target_](./include/slog/target.h) - A log target is the one that writes the log messages to streams. New targets could be implemented by extending the Target API.
 * [_Decorator_](./include/slog/decorators.h) - Adds additional prefixes to log messages like, timestamp, log level, pid, line number, etc.,
 * [_Log level_](./include/slog/log_level.h) - Labels that indicate the severity or urgency of the various events in the application.
+  Log level could be used in two different contexts with different meanings. First, setting the log level while initializing the `Logger` and/or `Target` so that they log only messages that match the set level (see below table). Secondly, while logging the messages using the `Logger` API, it tags the message with the specified level. Currently supported log levels(in chronological order) by the `Logger` and the `Target`, and their meanings:
+  
+  |Log Level | Value | Description |
+  |----------|--------------------|-------------|
+  |`None`| 0 | Disable all logs |
+  |`Critical`| 1 | Log only critical messages |
+  |`Error`| 2 | Log both critical and error messages |
+  |`Warning`| 3 | Log both critical, error, and warning messages |
+  |`Info`| 4 | Log critical, error, warning, and information messages |
+  |`Debug`| 5 | Log critical error, information, and debug messages |
+  |`Trace`| 6 | Log all messages | 
 
 Currently supported features:
   - Logs formatted string with a variable-sized list of arguments. (smimlar to `printf`)
