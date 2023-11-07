@@ -15,7 +15,7 @@
 ## Overview
 
 A very lightweight logging interface  written in C++. There are no additional dependencies other than C++11 STL.
-It supports very simple thread-safe API for logging into the console (standard output, standard error)
+It supports a very simple thread-safe API for logging into the console (standard output, standard error)
 and to a file. It also supports writing logs to multiple targets.
 
 **Terminology**
@@ -26,7 +26,7 @@ and to a file. It also supports writing logs to multiple targets.
 * [_Log level_](./include/slog/log_level.h) - Labels that indicate the severity or urgency of the various events in the application.
 
 Currently supported features:
-  - Logs formatted string with a variable sized list of arugments. (smimlar to `printf`)
+  - Logs formatted string with a variable-sized list of arguments. (smimlar to `printf`)
   - Multi-thread safe file target API
   - Logging to multiple targets
   - Multiple loggers sharing the same target
@@ -37,7 +37,7 @@ Currently supported features:
 
 Prerequisites for building and running the simple logger code:
 * git
-* C++11 compiler
+* C++11 compiler (GCC g++)
 * make
 
 ## Usage
